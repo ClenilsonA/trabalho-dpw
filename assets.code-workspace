@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../bookify (2)/bookify/assets"
+		},
+		{
+			"path": "../../bookify (2)/bookify/livros"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "livros"
+	}
+}

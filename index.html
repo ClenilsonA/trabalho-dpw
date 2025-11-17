@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookify</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* 1. Fundo da Página: 
+       Adicionado: overflow-x: hidden para eliminar o scroll horizontal indesejado
+       na página principal.
+    */
+    body {
+      background-color: #2C2C2C;
+      overflow-x: hidden; /* <--- A CORREÇÃO PRINCIPAL */
+    }
+
+    /* 2. Classe para Topbar e Sidebar: */
+    .bg-sidebar-nav {
+      background-color: #1E1E1E;
+    }
+
+    /* 3. Classe para Conteúdo Principal: */
+    .bg-main-content {
+      background-color: #2C2C2C;
+    }
+
+    /* 4. Cores de Texto: */
+    .bg-main-content,
+    .bg-main-content h2,
+    .bg-main-content p {
+      color: #FFFFFF;
+    }
+
+    /* 5. Ajuste Fino da Pesquisa (Opcional): */
+    @media (max-width: 768px) {
+      .navbar-search-form {
+        width: 100% !important;
+        margin-top: 10px;
+      }
+    }
+    
+    /* ========================================================= */
+    /* CSS PARA NAVEGAÇÃO POR BOTÕES */
+    /* ========================================================= */
+
+    /* Oculta a barra de rolagem nativa */
+    .scroll-hide-native {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        overflow-x: hidden !important;
+    }
+    
+    /* Estilo do botão (Ajustado para ser menor e garantir que aparece) */
+    .scroll-arrow {
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        padding: 3px 6px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border-radius: 5px; 
+        line-height: 1;
+        height: 30px;
+    }
+    
+    .scroll-arrow:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+    
+    /* Remove a visibilidade em telas pequenas para evitar crowding */
+    @media (max-width: 576px) {
+        .scroll-arrow {
+            display: none;
+        }
+    }
+    
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-sidebar-nav px-3 py-2">
+    <div class="container-fluid">
+      
+      <a href="/" class="navbar-brand d-flex align-items-center text-white text-decoration-none">
+        
+        <img 
+          src="assets/images/bookifylogo.png"
+          alt="Bookify Logo" 
+          style="height: 60px; width: auto;"
+          class="me-2" 
+        />
+        
+        <span class="fs-4 fw-bold">Bookify</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        
+        <div class="d-flex justify-content-center flex-grow-1 px-3 px-lg-5">
+          <input type="text" class="form-control w-100 navbar-search-form" style="max-width: 600px;" placeholder="Search for books..." />
+        </div>
+
+        <div class="ms-auto ms-md-0">
+          <img src="assets/images/avatar.png" alt="User Avatar" class="rounded-circle" width="45" height="45" />
+        </div>
+      </div>
+
+    </div>
+  </nav>
+  
+  <div class="container-fluid">
+    <div class="row flex-nowrap">
+      
+      <aside class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-sidebar-nav text-white min-vh-100">
+        <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2">
+          
+          <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+            <li class="nav-item">
+              <a href="#" class="nav-link text-white active">Home</a>
+            </li>
+            <li><a href="#" class="nav-link text-white">My List</a></li>
+            <li><a href="#" class="nav-link text-white">Popular</a></li>
+            <li><a href="#" class="nav-link text-white">Categories</a></li>
+            <li><a href="#" class="nav-link text-white">AI Chat</a></li>
+            <li><a href="#" class="btn btn-warning mt-3">Premium</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="col py-3 bg-main-content">
+        
+        <section class="mb-5">
+          
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            
+            <h2 class="mb-0">Genres</h2> 
+            
+            <div class="d-flex flex-shrink-0"> 
+                <button class="scroll-arrow me-2" onclick="scrollCarousel('genres-list', 'left')">
+                    &#10094; 
+                </button>
+                <button class="scroll-arrow" onclick="scrollCarousel('genres-list', 'right')">
+                    &#10095; 
+                </button>
+            </div>
+          </div>
+          
+          <div class="carousel-container">
+            
+            <div id="genres-list" class="d-flex flex-nowrap scroll-hide-native pb-2">
+
+              <div class="text-center me-4" style="min-width: 90px;">
+                <img src="https://via.placeholder.com/80x80.png" alt="Genre 1" class="img-fluid rounded-circle mb-2" />
+                <p class="mb-0">All</p>
+              </div>
+
+              <div class="text-center me-4" style="min-width: 90px;">
+                <img src="https://via.placeholder.com/80x80.png" alt="Genre 2" class="img-fluid rounded-circle mb-2" />
+                <p class="mb-0">Romantic</p>
+              </div>
+
+              <div class="text-center me-4" style="min-width: 90px;">
+                <img src="https://via.placeholder.com/80x80.png" alt="Genre 3" class="img-fluid rounded-circle mb-2" />
+                <p class="mb-0">Fiction</p>
+              </div>
+
+              <div class="text-center me-4" style="min-width: 90px;">
+                <img src="https://via.placeholder.com/80x80.png" alt="Genre 4" class="img-fluid rounded-circle mb-2" />
+                <p class="mb-0">Manga</p>
+              </div>
+
+              <div class="text-center me-4" style="min-width: 90px;">
+                <img src="https://via.placeholder.com/80x80.png" alt="Genre 5" class="img-fluid rounded-circle mb-2" />
+                <p class="mb-0">Education</p>
+              </div>
+              
+              <div class="text-center me-4" style="min-width: 90px;">
+                <img src="https://via.placeholder.com/80x80.png" alt="Genre 6" class="img-fluid rounded-circle mb-2" />
+                <p class="mb-0">Thriller</p>
+              </div>
+              <div class="text-center me-4" style="min-width: 90px;">
+                <img src="https://via.placeholder.com/80x80.png" alt="Genre 7" class="img-fluid rounded-circle mb-2" />
+                <p class="mb-0">History</p>
+              </div>
+              <div class="text-center me-4" style="min-width: 90px;">
+                <img src="https://via.placeholder.com/80x80.png" alt="Genre 8" class="img-fluid rounded-circle mb-2" />
+                <p class="mb-0">Sci-Fi</p>
+              </div>
+
+            </div>
+            
+          </div>
+        </section>
+        
+        <section class="mb-5">
+          
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            
+            <h2 class="mb-0">Popular</h2> 
+            
+            <div class="d-flex flex-shrink-0">
+                <button class="scroll-arrow me-2" onclick="scrollCarousel('popular-list', 'left')">
+                    &#10094; 
+                </button>
+                <button class="scroll-arrow" onclick="scrollCarousel('popular-list', 'right')">
+                    &#10095; 
+                </button>
+            </div>
+          </div>
+
+          <div class="carousel-container">
+
+            <div id="popular-list" class="d-flex flex-nowrap scroll-hide-native pb-2">
+            
+              <div class="text-center me-4" style="min-width: 180px;">
+                <img src="assets/images/Vector.png" alt="Book 1" class="img-fluid rounded mb-2" />
+                <p class="mb-0">Book Title 1</p>
+              </div>
+              <div class="text-center me-4" style="min-width: 180px;">
+                <img src="assets/images/yellow-book-4995 13.png" alt="Book 2" class="img-fluid rounded mb-2" />
+                <p class="mb-0">Book Title 2</p>
+              </div>
+              <div class="text-center me-4" style="min-width: 180px;">
+                <img src="assets/images/Vector (1).png" alt="Book 3" class="img-fluid rounded mb-2" />
+                <p class="mb-0">Book Title 3</p>
+              </div>
+              <div class="text-center me-4" style="min-width: 180px;">
+                <img src="assets/images/yellow-book-4995 15.png" alt="Book 4" class="img-fluid rounded mb-2" />
+                <p class="mb-0">Book Title 4</p>
+              </div>
+              <div class="text-center me-4" style="min-width: 180px;">
+                <img src="assets/images/Vector (2).png" alt="Book 5" class="img-fluid rounded mb-2" />
+                <p class="mb-0">Book Title 5</p>
+              </div>
+              
+              <div class="text-center me-4" style="min-width: 180px;">
+                <img src="https://via.placeholder.com/150x225?text=Book+6" alt="Book 6" class="img-fluid rounded mb-2" />
+                <p class="mb-0">Book Title 6</p>
+              </div>
+              <div class="text-center me-4" style="min-width: 180px;">
+                <img src="https://via.placeholder.com/150x225?text=Book+7" alt="Book 7" class="img-fluid rounded mb-2" />
+                <p class="mb-0">Book Title 7</p>
+              </div>
+
+            </div>
+            
+          </div>
+        </section>
+
+        <section>
+          <h2 class="mb-3">Latest</h2>
+          <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-3 text-center">
+              <img src="assets/images/book4.jpg" alt="Book 4" class="img-fluid rounded mb-2" />
+              <p>Book Title 4</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 text-center">
+              <img src="assets/images/book5.jpg" alt="Book 5" class="img-fluid rounded mb-2" />
+              <p>Book Title 5</p>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 text-center">
+              <img src="assets/images/book6.jpg" alt="Book 6" class="img-fluid rounded mb-2" />
+              <p>Book Title 6</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-success text-white p-4 rounded-3 my-5 d-flex flex-column flex-md-row align-items-center justify-content-between">
+          <div>
+            <h1 class="fw-bold">The Book of the Year</h1>
+            <p>Discover this month’s most popular reads.</p>
+            <button class="btn btn-light">View Now</button>
+          </div>
+          <div class="mt-3 mt-md-0">
+            <img src="assets/images/book-cover.png" alt="Featured Book" class="img-fluid rounded" style="max-height: 200px;" />
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const SCROLL_DISTANCE = 400; 
+
+    function scrollCarousel(listId, direction) {
+        const list = document.getElementById(listId);
+        if (!list) return;
+
+        if (direction === 'left') {
+            list.scrollLeft -= SCROLL_DISTANCE;
+        } else if (direction === 'right') {
+            list.scrollLeft += SCROLL_DISTANCE;
+        }
+        
+        // Aplica a rolagem suave
+        list.scroll({
+            left: list.scrollLeft, 
+            behavior: 'smooth'
+        });
+    }
+  </script>
+</body>
+</html>
