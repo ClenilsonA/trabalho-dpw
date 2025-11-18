@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookify - Detalhes do Livro</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'sidebar-bg': '#1E1E1E',
+            'main-bg': '#2C2C2C',
+            'custom-light': '#F5E9DA', 
+            'custom-green': '#09C358', 
+            'custom-yellow': '#FFD700', // Adicionei um amarelo para o botão Premium
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #2C2C2C;
+    }
+    /* Estilos adicionais, se necessário */
+  </style>
+</head>
+<body>
+
+  <nav class="flex items-center justify-between bg-sidebar-bg px-4 py-2 text-custom-light">
+    <div class="flex items-center">
+      <a href="/" class="flex items-center text-custom-light no-underline">
+        <img 
+          src="assets/images/bookifylogo.png"
+          alt="Bookify Logo" 
+          class="h-14 w-auto mr-2" 
+        />
+        <span class="text-2xl font-bold">Bookify</span>
+      </a>
+    </div>
+
+    <div class="hidden md:flex flex-grow justify-center px-8">
+      <input 
+        type="text" 
+        class="w-full max-w-xl p-2 rounded-md bg-custom-light text-gray-800 placeholder-gray-500" 
+        placeholder="Search for books..." 
+      />
+    </div>
+
+    <div class="ml-auto md:ml-0">
+      <img src="assets/images/Ellipse 1.png" alt="User Avatar" class="rounded-full w-11 h-11" />
+    </div>
+  </nav>
+
+  <div class="w-full h-[2px] bg-custom-green"></div>
+  
+  <div class="grid grid-cols-[auto_1fr] min-h-screen">
+    
+    <aside class="w-auto flex-shrink-0 bg-sidebar-bg text-custom-light px-6 py-2">
+      <div class="flex flex-col items-center sm:items-start pt-2">
+        
+        <ul class="flex flex-col space-y-2 mb-auto items-center sm:items-start">
+          <li><a href="#" class="block p-2 text-custom-light font-bold bg-gray-700 rounded">Home</a></li>
+          <li><a href="#" class="block p-2 text-custom-light hover:text-gray-400">My List</a></li>
+          <li><a href="#" class="block p-2 text-custom-light hover:text-gray-400">Popular</a></li>
+          <li><a href="#" class="block p-2 text-custom-light hover:text-gray-400">Categories</a></li>
+          <li><a href="#" class="block p-2 text-custom-light hover:text-gray-400">AI Chat</a></li>
+          <li><a href="#" class="mt-3 inline-block px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600">Premium</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="px-8 py-8 bg-main-bg text-custom-light flex">
+      <div class="flex flex-col md:flex-row gap-8 w-full max-w-5xl mx-auto">
+
+        <div class="flex flex-col items-center md:items-start w-full md:w-1/3">
+          <img 
+            src="assets/images/rich dad.jpg" 
+            alt="Capa do Livro" 
+            class="w-full max-w-xs md:max-w-none h-auto object-cover rounded-lg shadow-lg mb-4" 
+          />
+          <h2 class="text-3xl font-bold text-center md:text-left mb-1">Rich Dad Poor Dad</h2>
+          <p class="text-lg text-gray-400 text-center md:text-left">Robert T. Kiyosaki with Sharon Lechter (1997)</p>
+        </div>
+
+        <div class="flex flex-col w-full md:w-2/3">
+          <h3 class="text-xl font-semibold mb-3">Sinopse</h3>
+          <p class="text-lg font-light leading-relaxed mb-8">
+            The book presents the perspective of the author, Robert Kiyosaki, who had two fathers: his "Poor Dad" (his highly educated biological father, who was financially struggling) and his "Rich Dad" (his friend's father, a successful entrepreneur who lacked formal education). The book advocates for the importance of financial literacy, financial independence, and building assets that generate passive income, rather than relying solely on a traditional job and salary. Kiyosaki emphasizes the need to understand how money works, how to invest, and the difference between an asset (something that puts money in your pocket) and a liability (something that takes money out of your pocket). It challenges conventional thinking about career and finance, encouraging readers to start their own businesses and invest in real estate or other income-generating ventures.</p>
+
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button class="flex items-center justify-center px-6 py-3 bg-custom-green text-custom-light font-bold rounded-lg hover:opacity-90 transition-opacity">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+              </svg>
+              Read Online
+            </button>
+            <button class="flex items-center justify-center px-6 py-3 bg-custom-yellow text-gray-900 font-bold rounded-lg hover:opacity-90 transition-opacity relative">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+              Download Offline
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2h2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

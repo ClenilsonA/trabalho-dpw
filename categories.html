@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookify - Categorias</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'sidebar-bg': '#1E1E1E',
+            'main-bg': '#2C2C2C',
+            'custom-light': '#F5E9DA', 
+            'custom-green': '#09C358', 
+            'custom-yellow': '#FFD700', 
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #2C2C2C;
+    }
+
+    .scroll-hide-native {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        overflow-x: hidden !important;
+    }
+    
+    .scroll-arrow {
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #F5E9DA; 
+        border: none;
+        padding: 3px 6px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border-radius: 5px; 
+        line-height: 1;
+        height: 30px;
+    }
+    
+    .scroll-arrow:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+    
+    @media (max-width: 576px) {
+        .scroll-arrow {
+            display: none;
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="flex items-center justify-between bg-sidebar-bg px-4 py-2 text-custom-light">
+    <div class="flex items-center">
+      <a href="/" class="flex items-center text-custom-light no-underline">
+        <img 
+          src="assets/images/bookifylogo.png"
+          alt="Bookify Logo" 
+          class="h-14 w-auto mr-2" 
+        />
+        <span class="text-2xl font-bold">Bookify</span>
+      </a>
+    </div>
+
+    <div class="hidden md:flex flex-grow justify-center px-8">
+      <input 
+        type="text" 
+        class="w-full max-w-xl p-2 rounded-md bg-custom-light text-gray-800 placeholder-gray-500" 
+        placeholder="Search for books..." 
+      />
+    </div>
+
+    <div class="ml-auto md:ml-0">
+      <img src="assets/images/Ellipse 1.png" alt="User Avatar" class="rounded-full w-11 h-11" />
+    </div>
+  </nav>
+
+  <div class="w-full h-[2px] bg-custom-green"></div>
+  
+  <div class="grid grid-cols-[auto_1fr] min-h-screen">
+    
+    <aside class="w-auto flex-shrink-0 bg-sidebar-bg text-custom-light px-6 py-2">
+      <div class="flex flex-col items-center sm:items-start pt-2">
+        
+        <ul class="flex flex-col space-y-2 mb-auto items-center sm:items-start">
+          <li><a href="#" class="block p-2 text-custom-light font-bold">Home</a></li>
+          <li><a href="#" class="block p-2 text-custom-light hover:text-gray-400">My List</a></li>
+          <li><a href="#" class="block p-2 text-custom-light hover:text-gray-400">Popular</a></li>
+          <li><a href="#" class="block p-2 text-custom-light font-bold bg-gray-700 rounded">Categories</a></li> <li><a href="#" class="block p-2 text-custom-light hover:text-gray-400">AI Chat</a></li>
+          <li><a href="#" class="mt-3 inline-block px-4 py-2 bg-yellow-500 text-black font-semibold rounded hover:bg-yellow-600">Premium</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="px-4 py-4 md:py-6 bg-main-bg text-custom-light overflow-hidden">
+      
+      <h1 class="text-3xl font-bold mb-6">Explore Genres</h1>
+
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">Classics</h2> 
+        <div class="flex overflow-x-scroll scroll-hide-native pb-2 space-x-4">
+        
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 13.png" alt="Book 2" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Crime And Punishment</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector (1).png" alt="Book 3" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">War and Peace</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector (2).png" alt="Book 5" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Julio Verne:Otaces</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 15.png" alt="Book 4" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">The Communist Manifesto</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector.png" alt="Book 1" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Harry Potter</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 17.png" alt="Book 7" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Dan Brown</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 17.png" alt="Book 6" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Karl Max</p>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">Fiction</h2> 
+        <div class="flex overflow-x-scroll scroll-hide-native pb-2 space-x-4">
+        
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector.png" alt="Book 1" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Harry Potter</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 15.png" alt="Book 4" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">The Communist Manifesto</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 17.png" alt="Book 7" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Dan Brown</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector (1).png" alt="Book 3" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">War and Peace</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 13.png" alt="Book 2" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Crime And Punishment</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector (2).png" alt="Book 5" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Julio Verne:Otaces</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 17.png" alt="Book 6" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Karl Max</p>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">Thriller</h2> 
+        <div class="flex overflow-x-scroll scroll-hide-native pb-2 space-x-4">
+        
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 17.png" alt="Book 7" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Dan Brown</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector (1).png" alt="Book 3" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">War and Peace</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector.png" alt="Book 1" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Harry Potter</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 13.png" alt="Book 2" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Crime And Punishment</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 17.png" alt="Book 6" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Karl Max</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 15.png" alt="Book 4" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">The Communist Manifesto</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector (2).png" alt="Book 5" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Julio Verne:Otaces</p>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">History</h2> 
+        <div class="flex overflow-x-scroll scroll-hide-native pb-2 space-x-4">
+        
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector (2).png" alt="Book 5" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Julio Verne:Otaces</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 17.png" alt="Book 6" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Karl Max</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 15.png" alt="Book 4" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">The Communist Manifesto</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector (1).png" alt="Book 3" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">War and Peace</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 13.png" alt="Book 2" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Crime And Punishment</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/yellow-book-4995 17.png" alt="Book 7" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Dan Brown</p>
+          </div>
+          <div class="text-center flex-shrink-0 w-32">
+            <img src="assets/images/Vector.png" alt="Book 1" class="w-full h-48 object-cover rounded mb-2" />
+            <p class="text-base">Harry Potter</p>
+          </div>
+
+        </div>
+      </section>
+
+      
+    </main>
+  </div>
+
+  <script>
+    const SCROLL_DISTANCE = 400; 
+
+    function scrollCarousel(listId, direction) {
+        const list = document.getElementById(listId);
+        if (!list) return;
+
+        if (direction === 'left') {
+            list.scrollLeft -= SCROLL_DISTANCE;
+        } else if (direction === 'right') {
+            list.scrollLeft += SCROLL_DISTANCE;
+        }
+        
+        list.scroll({
+            left: list.scrollLeft, 
+            behavior: 'smooth'
+        });
+    }
+  </script>
+</body>
+</html>
