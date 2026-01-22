@@ -36,13 +36,13 @@ CREATE TABLE IF NOT EXISTS `livros` (
 
 -- Dumping data for table bookify_db.livros: ~7 rows (approximately)
 INSERT INTO `livros` (`id`, `titulo`, `autor`, `sinopse`, `capa_url`, `categoria`, `is_popular`, `conteudo_url`) VALUES
-	(1001, 'Harry Potter and the Sorcerer\'s Stone', 'J.K. Rowling', 'An orphaned boy discovers he is a wizard and attends a magical school, beginning a series of adventures against a dark lord.', 'assets\\images\\Vector.png', 'Fantasy', 1, 'livros'),
-	(1002, 'Crime and Punishment', 'Fyodor Dostoevsky', 'A struggling student, Raskolnikov, murders a ruthless pawnbroker and deals with the resulting psychological and moral consequences.', 'assets\\images\\yellow-book-4995 13.png', 'Classic', 1, NULL),
-	(1003, 'War and Peace', 'Leo Tolstoy', 'A sweeping epic following five aristocratic Russian families during Napoleon\'s invasion, exploring themes of love, war, and philosophy.', 'assets\\images\\Vector (1).png', 'Classic', 0, NULL),
-	(1004, 'The Communist Manifesto', 'Karl Marx', 'A political pamphlet arguing that class struggles are the motivation behind all historical developments, written by Marx and Engels.', 'assets/images/yellow-book-4995 15.png', 'Political Science', 0, NULL),
-	(1005, 'Otaces', 'Jules Verne', '(Based on Twenty Thousand Leagues Under the Sea) A professor and a harpooner board the advanced submarine Nautilus, captained by the mysterious Nemo, exploring the ocean depths.', 'assets\\images\\Vector (2).png', 'Science Fiction', 1, NULL),
-	(1006, 'The Lord of the Rings', 'J.R.R. Tolkien', 'A young hobbit inherits a powerful, corrupted ring and must embark on a quest across Middle-earth to destroy it, facing the Dark Lord Sauron.', 'assets\\images\\tlor.jpg', 'Fantasy', 1, NULL),
-	(1007, 'The Da Vinci Code', 'Dan Brown', 'A Harvard professor races across Europe to solve a series of cryptic clues tied to Da Vinci\'s work and a secret society protecting a historical secret.', 'assets\\images\\davinchcode.jpg', 'Thriller', 1, NULL);
+	(1001, 'Harry Potter and the Sorcerer\'s Stone', 'J.K. Rowling', 'An orphaned boy discovers he is a wizard and attends a magical school, beginning a series of adventures against a dark lord.', 'assets\\images\\Vector.png', 'Fantasy', 1, 'livros\\Harry-Poter.txt.txt'),
+	(1002, 'Crime and Punishment', 'Fyodor Dostoevsky', 'A struggling student, Raskolnikov, murders a ruthless pawnbroker and deals with the resulting psychological and moral consequences.', 'assets\\images\\yellow-book-4995 13.png', 'Classic', 1, 'livros\\Crime-and-Punishment.txt'),
+	(1003, 'War and Peace', 'Leo Tolstoy', 'A sweeping epic following five aristocratic Russian families during Napoleon\'s invasion, exploring themes of love, war, and philosophy.', 'assets\\images\\Vector (1).png', 'Classic', 0, 'livros\\The-Comunist-Manifesto.txt'),
+	(1004, 'The Communist Manifesto', 'Karl Marx', 'A political pamphlet arguing that class struggles are the motivation behind all historical developments, written by Marx and Engels.', 'assets/images/yellow-book-4995 15.png', 'Political Science', 0, 'livros\\War-and-Peace.txt'),
+	(1005, 'Otaces', 'Jules Verne', '(Based on Twenty Thousand Leagues Under the Sea) A professor and a harpooner board the advanced submarine Nautilus, captained by the mysterious Nemo, exploring the ocean depths.', 'assets\\images\\Vector (2).png', 'Science Fiction', 1, 'livros\\Oteces.txt'),
+	(1006, 'The Lord of the Rings', 'J.R.R. Tolkien', 'A young hobbit inherits a powerful, corrupted ring and must embark on a quest across Middle-earth to destroy it, facing the Dark Lord Sauron.', 'assets\\images\\tlor.jpg', 'Fantasy', 1, 'livros\\The-Lord-Rings.txt'),
+	(1007, 'The Da Vinci Code', 'Dan Brown', 'A Harvard professor races across Europe to solve a series of cryptic clues tied to Da Vinci\'s work and a secret society protecting a historical secret.', 'assets\\images\\davinchcode.jpg', 'Thriller', 1, 'livros\\The-Vinci-Code.txt');
 
 -- Dumping structure for table bookify_db.minha_lista
 DROP TABLE IF EXISTS `minha_lista`;
