@@ -1,83 +1,55 @@
 <?php
-// Inicia a sessão para obter o ID do utilizador
+// add-to-list.php
 session_start();
 require_once 'db_config.php';
 
-// Redirecionar se o utilizador não estiver logado
+// 1. Verificar se o utilizador está logado
 if (!isset($_SESSION['user_id'])) {
-
-    header("Location: login.php"); 
+    $_SESSION['message'] = ['type' => 'error', 'text' => 'You must be logged in to manage your list.'];
+    header("Location: login.php");
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
+// 2. Verificar se os dados foram enviados por POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'], $_POST['action'])) {
+    $user_id = $_SESSION['user_id'];
+    $book_id = intval($_POST['book_id']);
+    $action = $_POST['action'];
 
-// Verificar se os dados necessários foram recebidos
-if (!isset($_POST['book_id']) || !isset($_POST['action'])) {
-    // Redireciona 
-    header("Location: index.php"); 
-    exit;
-}
-
-$book_id = $_POST['book_id'];
-$action = $_POST['action']; // Ação pode ser 'add' ou 'remove'
-
-// Validação de segurança: garantir que o ID do livro é um inteiro
-if (!filter_var($book_id, FILTER_VALIDATE_INT)) {
-    // Redireciona se for inválido
-    header("Location: index.php"); 
-    exit;
-}
-
-$conn->begin_transaction(); // Inicia uma transação para garantir a integridade dos dados
-
-try {
     if ($action === 'add') {
-        // --- ADICIONAR À LISTA ---
-        // A Chave Única Composta (`uc_user_book`) irá impedir entradas duplicadas.
-        $sql = "INSERT INTO minha_lista (id_utilizador, id_livro) VALUES (?, ?)";
+        // INSERIR na nova tabela 'my_list' usando nomes em Inglês
+        $sql = "INSERT IGNORE INTO my_list (user_id, book_id) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ii", $user_id, $book_id);
         
         if ($stmt->execute()) {
-            // Sucesso: Livro adicionado. Mensagem do sistema em Inglês.
-            $_SESSION['message'] = ['type' => 'success', 'text' => 'Book added to your list successfully.'];
+            $_SESSION['message'] = ['type' => 'success', 'text' => 'Book added to your library!'];
         } else {
-            // Verifica o erro de entrada duplicada (código 1062 no MySQL/MariaDB)
-            if ($conn->errno == 1062) {
-                 // A entrada já existe. Mensagem do sistema em Inglês.
-                 $_SESSION['message'] = ['type' => 'info', 'text' => 'This book is already in your list.'];
-            } else {
-                 // Outro erro de base de dados.
-                 throw new Exception("Database error: " . $conn->error);
-            }
+            $_SESSION['message'] = ['type' => 'error', 'text' => 'Error adding book: ' . $conn->error];
         }
         $stmt->close();
-        
+
     } elseif ($action === 'remove') {
-        // --- REMOVER DA LISTA ---
-        // SQL para apagar o par utilizador-livro da tabela.
-        $sql = "DELETE FROM minha_lista WHERE id_utilizador = ? AND id_livro = ?";
+        // REMOVER da nova tabela 'my_list'
+        $sql = "DELETE FROM my_list WHERE user_id = ? AND book_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ii", $user_id, $book_id);
-        $stmt->execute();
+        
+        if ($stmt->execute()) {
+            $_SESSION['message'] = ['type' => 'info', 'text' => 'Book removed from your library.'];
+        } else {
+            $_SESSION['message'] = ['type' => 'error', 'text' => 'Error removing book.'];
+        }
         $stmt->close();
-
-        // Sucesso na remoção. Mensagem do sistema em Inglês.
-        $_SESSION['message'] = ['type' => 'success', 'text' => 'Book removed from your list.'];
     }
 
-    $conn->commit(); // Confirma as alterações na base de dados
-    
-} catch (Exception $e) {
-    $conn->rollback(); // Reverte a transação em caso de erro
-    // Erro inesperado. Mensagem do sistema em Inglês.
-    $_SESSION['message'] = ['type' => 'error', 'text' => 'An unexpected error occurred.'];
+    $conn->close();
+    // Redireciona de volta para a página onde o utilizador estava
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit;
+
+} else {
+    // Se alguém tentar aceder ao ficheiro diretamente sem POST
+    header("Location: index.php");
+    exit;
 }
-
-$conn->close();
-
-// Redirecionar de volta para a página de detalhes do livro
-header("Location: book-details.php?id=" . $book_id);
-exit;
-?>

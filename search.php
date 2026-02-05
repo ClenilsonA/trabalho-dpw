@@ -1,75 +1,78 @@
 <?php
 require_once 'db_config.php'; 
 
-// Inclui o HTML inicial, Navbar e abre o Grid
 include 'header.php'; 
-?>
-    
-<?php 
-// Inclui a Sidebar
 include 'sidebar.php'; 
 ?>
 
-    <main class="px-4 py-4 md:py-6 bg-main-bg text-custom-light">
+<main class="px-4 py-4 md:py-6 bg-main-bg text-custom-light min-h-screen">
+    
+    <?php
+    $search_term = "";
+    $where_clause = "";
+    $title_text = "Search Results";
+
+    // 1. Verificar se o termo de pesquisa (q) foi passado
+    if (isset($_GET['q']) && !empty($_GET['q'])) {
+        $search_term = trim($_GET['q']);
+        $safe_term = $conn->real_escape_string($search_term);
+        $like_pattern = '%' . $safe_term . '%';
+
+        $title_text = "Results for: \"{$search_term}\"";
+
+        // CORREÇÃO: Usar 'title' e 'author' em vez de titulo/autor
+        $where_clause = "WHERE title LIKE '{$like_pattern}' OR author LIKE '{$like_pattern}'";
+    }
+
+    // 2. Query Principal corrigida para os novos nomes de colunas
+    $sql = "SELECT id, title, author, cover_url FROM livros {$where_clause} ORDER BY title ASC";
+    $result = $conn->query($sql);
+    ?>
+
+    <header class="mb-10">
+        <h1 class="text-3xl font-extrabold text-custom-green italic border-b border-gray-800 pb-4">
+            <?php echo htmlspecialchars($title_text); ?>
+        </h1>
+    </header>
+
+    <div class="flex flex-wrap gap-8 justify-center md:justify-start">
         
         <?php
-        $search_term = "";
-        $where_clause = "";
-        $title_text = "Search Results";
-
-        // 1. Verificar se o termo de pesquisa (q) foi passado no URL
-        if (isset($_GET['q']) && !empty($_GET['q'])) {
-            // Usamos a função trim para remover espaços em branco desnecessários
-            $search_term = trim($_GET['q']);
-            
-            // 2. Prepara o termo para ser usado na query SQL (Adiciona % para pesquisa LIKE)
-            // IMPORTANTE: Usa real_escape_string para segurança contra SQL Injection
-            $safe_term = $conn->real_escape_string($search_term);
-            $like_pattern = '%' . $safe_term . '%';
-
-            $title_text = "Results for: \"{$search_term}\"";
-
-            // 3. Cria a cláusula WHERE para procurar no TÍTULO OU no AUTOR
-            $where_clause = "WHERE titulo LIKE '{$like_pattern}' OR autor LIKE '{$like_pattern}'";
-        }
-
-        // 4. Query Principal
-        // Esta query irá buscar todos os livros que correspondam à cláusula WHERE (ou todos, se não houver termo de pesquisa)
-        $sql = "SELECT id, titulo, autor, capa_url, categoria FROM livros {$where_clause} ORDER BY titulo ASC";
-        $result = $conn->query($sql);
+        if ($result && $result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $detail_url = "book-details.php?id=" . $row['id'];
         ?>
-
-        <h1 class="text-3xl font-bold mb-6 border-b border-gray-700 pb-2"><?php echo $title_text; ?></h1>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-            
-            <?php
-            if ($result && $result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    $detail_url = "book-details.php?id=" . $row['id'];
-            ?>
-                    <a href="<?php echo $detail_url; ?>" class="text-center flex-shrink-0 hover:opacity-80 transition block">
+                <a href="<?php echo $detail_url; ?>" class="group w-44 text-center transition-all">
+                    <div class="relative overflow-hidden rounded-xl shadow-2xl mb-3 border border-gray-800 group-hover:border-custom-green transition-all">
                         <img 
-                            src="<?php echo htmlspecialchars($row['capa_url']); ?>" 
-                            alt="<?php echo htmlspecialchars($row['titulo']); ?>" 
-                            class="w-full h-48 object-cover rounded mb-2" 
+                            src="<?php echo htmlspecialchars($row['cover_url']); ?>" 
+                            alt="<?php echo htmlspecialchars($row['title']); ?>" 
+                            class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500" 
                         />
-                        <p class="text-base font-medium"><?php echo htmlspecialchars($row['titulo']); ?></p>
-                        <p class="text-sm text-gray-400"><?php echo htmlspecialchars($row['autor']); ?></p>
-                    </a>
-                    <?php
-                }
-                $result->free();
-            } else {
-                echo '<p class="text-gray-400">Desculpe, não foram encontrados resultados para a sua pesquisa.</p>';
+                    </div>
+                    <h3 class="text-lg font-bold truncate px-1 group-hover:text-custom-green transition-colors">
+                        <?php echo htmlspecialchars($row['title']); ?>
+                    </h3>
+                    <p class="text-xs text-gray-500 truncate uppercase tracking-widest mt-1">
+                        <?php echo htmlspecialchars($row['author']); ?>
+                    </p>
+                </a>
+        <?php
             }
-            
-            $conn->close();
-            ?>
-            
-        </div>
+            $result->free();
+        } else {
+            echo '
+            <div class="col-span-full py-20 text-center">
+                <p class="text-gray-500 text-xl italic">No books found for that search.</p>
+                <a href="index.php" class="text-custom-green underline mt-4 inline-block">Back to home</a>
+            </div>';
+        }
         
-    </main>
+        $conn->close();
+        ?>
+        
+    </div>
+</main>
     
 <?php 
 include 'footer.php'; 

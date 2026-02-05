@@ -1,9 +1,8 @@
 <?php
-// Inicia a sessão para gestão de utilizadores (Login/Logout)
+// Inicia a sessão para gestão de utilizadores
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-// NOTA: A ligação à BD ('db_config.php') não é necessária aqui.
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,9 +29,9 @@ if (session_status() === PHP_SESSION_NONE) {
     </script>
 
     <style>
-        /* TODOS OS ESTILOS CSS VÃO AQUI */
         body {
             background-color: #2C2C2C;
+            margin: 0; 
         }
 
         .scroll-hide-native {
@@ -67,15 +66,15 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 <body>
 
-    <nav class="flex items-center justify-between bg-sidebar-bg px-4 py-2 text-custom-light">
+    <nav class="sticky top-0 z-50 flex items-center justify-between bg-sidebar-bg px-4 py-2 text-custom-light shadow-lg">
         <div class="flex items-center">
             <a href="index.php" class="flex items-center text-custom-light no-underline">
                 <img 
                     src="assets/images/bookifylogo.png"
                     alt="Bookify Logo" 
-                    class="h-14 w-auto mr-2" 
+                    class="h-10 md:h-14 w-auto mr-2" 
                 />
-                <span class="text-2xl font-bold">Bookify</span>
+                <span class="text-xl md:text-2xl font-bold hidden sm:inline">Bookify</span>
             </a>
         </div>
 
@@ -91,20 +90,19 @@ if (session_status() === PHP_SESSION_NONE) {
                 🔍
             </button>
         </form>
+
         <div class="ml-auto md:ml-0">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="my-list.php" class="flex items-center text-sm font-medium hover:text-custom-green transition">
-                    <img src="assets/images/Ellipse 1.png" alt="User Avatar" class="rounded-full w-11 h-11 mr-2" />
-                    Olá, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!
+                    <img src="assets/images/Ellipse 1.png" alt="User Avatar" class="rounded-full w-8 h-8 md:w-11 md:h-11 md:mr-2" />
+                    <span class="hidden md:inline">Olá, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</span>
                 </a>
             <?php else: ?>
-                <a href="login.php" class="block rounded-full w-11 h-11 transition hover:opacity-80">
-                    <img src="assets/images/Ellipse 1.png" alt="Log In" class="rounded-full w-11 h-11" />
+                <a href="login.php" class="block rounded-full w-8 h-8 md:w-11 md:h-11 transition hover:opacity-80">
+                    <img src="assets/images/Ellipse 1.png" alt="Log In" class="rounded-full w-full h-full" />
                 </a>
             <?php endif; ?>
         </div>
     </nav>
 
-    <div class="w-full h-[2px] bg-custom-green"></div>
-    
-    <div class="grid grid-cols-[auto_1fr] min-h-screen">
+    <div class="sticky top-[56px] md:top-[72px] z-50 w-full h-[2px] bg-custom-green"></div>

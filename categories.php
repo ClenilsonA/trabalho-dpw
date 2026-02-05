@@ -1,49 +1,62 @@
-<?php
+<?php 
 require_once 'db_config.php'; 
+include 'header.php'; // Camada 1: Topo Fixo
 
-// Query para obter categorias únicas e não repetidas
-$sql_categories = "SELECT DISTINCT categoria FROM livros ORDER BY categoria ASC";
+// Buscar todas as categorias para criar os "quadrados" (cards)
+$sql_categories = "SELECT id, name FROM categorias ORDER BY name ASC";
 $result_categories = $conn->query($sql_categories);
-
-include 'header.php'; 
 ?>
+
+<div class="flex w-full"> 
     
-<?php 
-include 'sidebar.php'; 
-?>
+    <?php include 'sidebar.php'; ?> 
 
-    <main class="px-4 py-4 md:py-6 bg-main-bg text-custom-light">
+    <main class="flex-1 min-w-0 px-4 py-4 md:py-8 bg-main-bg text-custom-light min-h-screen relative z-0">
         
-        <h1 class="text-3xl font-bold mb-8 border-b border-gray-700 pb-2">Explore All Categories</h1>
+        <header class="mb-12">
+            <h1 class="text-4xl font-black text-custom-green italic tracking-tighter uppercase">
+                Categories
+            </h1>
+            <p class="text-gray-400 mt-2 font-medium">Select a genre to explore books.</p>
+            <div class="w-20 h-1 bg-custom-green mt-4"></div>
+        </header>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             
-            <?php
-            if ($result_categories && $result_categories->num_rows > 0) {
-                while($row = $result_categories->fetch_assoc()) {
-                    $category_name = htmlspecialchars($row['categoria']);
+            <?php 
+            if ($result_categories && $result_categories->num_rows > 0):
+                while($cat = $result_categories->fetch_assoc()):
+                    // URL que leva para a lista de livros dessa categoria específica
+                    $list_url = "category-list.php?id=" . $cat['id'];
+            ?>
+                <a href="<?php echo $list_url; ?>" class="group relative aspect-square bg-gray-800 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-700 hover:border-custom-green transition-all duration-300 shadow-xl">
                     
-                    // O link aponta para a nova página de filtro: category-list.php
-                    $category_link = "category-list.php?genre=" . urlencode($category_name);
+                    <div class="absolute inset-0 bg-gradient-to-br from-custom-green/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    <div class="relative z-10 text-center p-4">
+                        <h3 class="text-lg md:text-xl font-bold uppercase tracking-widest group-hover:scale-110 transition-transform duration-300">
+                            <?php echo htmlspecialchars($cat['name']); ?>
+                        </h3>
+                        <div class="mt-2 w-8 h-1 bg-custom-green mx-auto transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>
+                    </div>
+
+                    <div class="absolute -bottom-2 -right-2 text-6xl text-white/5 font-black italic group-hover:text-custom-green/10 transition-colors">
+                        <?php echo substr($cat['name'], 0, 1); ?>
+                    </div>
+                </a>
+            <?php 
+                endwhile; 
+            else: 
             ?>
-                    <a href="<?php echo $category_link; ?>" class="bg-sidebar-bg p-6 rounded-lg shadow-md hover:bg-gray-700 transition duration-200 block">
-                        <h2 class="text-xl font-semibold mb-2"><?php echo $category_name; ?></h2>
-                        <p class="text-gray-400">View all books in the <?php echo $category_name; ?> genre.</p>
-                        <span class="text-custom-green mt-2 block font-medium">Click to see books &rarr;</span>
-                    </a>
-            <?php
-                }
-                $result_categories->free();
-            } else {
-                echo '<p class="text-gray-400">Não foram encontradas categorias na base de dados.</p>';
-            }
-            $conn->close();
-            ?>
-            
+                <p class="col-span-full text-center text-gray-500 italic">No categories found.</p>
+            <?php endif; ?>
+
         </div>
-        
+
     </main>
-    
+</div>
+
 <?php 
+$conn->close();
 include 'footer.php'; 
 ?>

@@ -1,164 +1,86 @@
-<?php 
-// 1. INCLUIR A CONFIGURAÇÃO DO BANCO DE DADOS
-// IMPORTANTE: Certifique-se que o db_config.php está na mesma pasta.
-require_once 'db_config.php'; 
+<?php
+// category-list.php
+require_once 'db_config.php';
+include 'header.php';
 
-// Query para obter categorias únicas e não repetidas (usada na secção Genres)
-$sql_categories = "SELECT DISTINCT categoria FROM livros ORDER BY categoria ASC";
-$result_categories = $conn->query($sql_categories);
+// Pegamos o ID da categoria via URL
+$cat_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$genre_name = 'All Books';
 
-// Inclui o HTML inicial, Navbar e abre o Grid
-include 'header.php'; 
+// Procurar o nome da categoria para o título
+if ($cat_id > 0) {
+    $stmt_cat = $conn->prepare("SELECT name FROM categorias WHERE id = ?");
+    $stmt_cat->bind_param("i", $cat_id);
+    $stmt_cat->execute();
+    $res_cat = $stmt_cat->get_result();
+    if ($row_cat = $res_cat->fetch_assoc()) {
+        $genre_name = $row_cat['name'];
+    }
+    $stmt_cat->close();
+}
 ?>
-    
-<?php 
-// Inclui a Sidebar
-include 'sidebar.php'; 
-?>
 
-    <main class="px-4 py-4 md:py-6 bg-main-bg text-custom-light overflow-hidden">
+<div class="flex w-full">
+
+    <?php include 'sidebar.php'; ?>
+
+    <main class="flex-1 min-w-0 px-4 py-4 md:py-8 bg-main-bg text-custom-light min-h-screen relative z-0">
         
-        <section class="mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-semibold">Genres</h2> 
-                
-                <div class="flex flex-shrink-0"> 
-                    <button class="scroll-arrow mr-2" onclick="scrollCarousel('genres-list', 'left')">&#10094;</button>
-                    <button class="scroll-arrow" onclick="scrollCarousel('genres-list', 'right')">&#10095;</button>
-                </div>
-            </div>
-            
-            <div class="relative">
-                <div id="genres-list" class="flex overflow-x-scroll scroll-hide-native pb-2 space-x-4">
-                    
-                    <a href="categories.php" class="text-center flex-shrink-0 w-24 hover:opacity-80 transition">
-                        <img src="assets/images/yellow-book-4995 1.png" alt="All" class="w-20 h-20 mx-auto mb-2" />
-                        <p class="text-sm">All</p>
-                    </a>
+        <div class="mb-10">
+            <a href="categories.php" class="text-xs uppercase tracking-widest text-gray-500 hover:text-custom-green transition flex items-center gap-2">
+                <span>&larr;</span> Back to Categories
+            </a>
+            <h1 class="text-4xl font-black text-custom-green mt-4 italic uppercase tracking-tighter">
+                <?php echo htmlspecialchars($genre_name); ?>
+            </h1>
+            <div class="w-16 h-1 bg-custom-green mt-2"></div>
+        </div>
 
-                    <?php
-                    // Mapeamento de imagens para algumas categorias (opcional, para visual)
-                    $category_images = [
-                        'Fantasy' => 'assets/images/yellow-book-4995 3.png',
-                        'Classic' => 'assets/images/yellow-book-4995 30.png',
-                        'Political Science' => 'assets/images/yellow-book-4995 4.png',
-                        'Science Fiction' => 'assets/images/yellow-book-4995 5.png',
-                    ];
-                    
-                    if ($result_categories && $result_categories->num_rows > 0) {
-                        while($row = $result_categories->fetch_assoc()) {
-                            $category_name = htmlspecialchars($row['categoria']);
-                            // Tenta obter a imagem mapeada, senão usa uma padrão
-                            $category_img = $category_images[$category_name] ?? 'assets/images/yellow-book-4995 1.png';
-                            
-                            // O link usa urlencode para garantir que caracteres especiais funcionem no URL
-                            $category_link = "categories.php?genre=" . urlencode($category_name);
-                    ?>
-                            <a href="<?php echo $category_link; ?>" class="text-center flex-shrink-0 w-24 hover:opacity-80 transition">
-                                <img src="<?php echo $category_img; ?>" alt="<?php echo $category_name; ?>" class="w-20 h-20 mx-auto mb-2" />
-                                <p class="text-sm"><?php echo $category_name; ?></p>
-                            </a>
-                    <?php
-                        }
-                        $result_categories->free();
-                    }
-                    ?>
-                </div>
-            </div>
-        </section>
-        
-        <section class="mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-semibold">Popular</h2> 
-                
-                <div class="flex flex-shrink-0">
-                    <button class="scroll-arrow mr-2" onclick="scrollCarousel('popular-list', 'left')">&#10094;</button>
-                    <button class="scroll-arrow" onclick="scrollCarousel('popular-list', 'right')">&#10095;</button>
-                </div>
-            </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+            <?php
+            if ($cat_id > 0) {
+                // Busca livros pela categoria ID
+                $sql = "SELECT id, title, cover_url, author FROM livros WHERE category_id = ? ORDER BY title ASC";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $cat_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+            } else {
+                // Se não houver ID, mostra tudo
+                $sql = "SELECT id, title, cover_url, author FROM livros ORDER BY title ASC";
+                $result = $conn->query($sql);
+            }
 
-            <div class="relative">
-                <div id="popular-list" class="flex overflow-x-scroll scroll-hide-native pb-2 space-x-4">
-                    
-                    <?php
-                    // Query para selecionar livros marcados como populares
-                    $sql_popular = "SELECT id, titulo, capa_url FROM livros WHERE is_popular = 1 LIMIT 7";
-                    $result_popular = $conn->query($sql_popular);
-
-                    if ($result_popular && $result_popular->num_rows > 0) {
-                        while($row = $result_popular->fetch_assoc()) {
-                            $detail_url = "book-details.php?id=" . $row['id']; 
-                    ?>
-                            <a href="<?php echo $detail_url; ?>" class="text-center flex-shrink-0 w-32 hover:opacity-80 transition">
-                                <img 
-                                    src="<?php echo $row['capa_url']; ?>" 
-                                    alt="<?php echo htmlspecialchars($row['titulo']); ?>" 
-                                    class="w-full h-48 object-cover rounded mb-2" 
-                                />
-                                <p class="text-base"><?php echo htmlspecialchars($row['titulo']); ?></p>
-                            </a>
-                            <?php
-                        } // Fim do loop
-                        $result_popular->free();
-                    } else {
-                        echo "<p class='text-gray-400'>Não foram encontrados livros populares na base de dados.</p>";
-                    }
-                    ?>
-
-                </div>
-            </div>
-        </section>
-
-        <section class="bg-custom-green text-custom-light p-6 rounded-lg my-8 flex flex-col md:flex-row items-center justify-between">
-            <div class="order-2 md:order-1">
-                <h1 class="text-4xl font-bold">2024 year 50 most</h1>
-                <h1 class="text-4xl font-bold">popular bestseller</h1>
-                <p class="mt-1 mb-4">Explore the literary highlights of 2023 with our '50 Most Popular Bestsellers'badge—a curated collection of the year's must-reads.</p>
-
-                <button class="px-4 py-2 bg-custom-light text-black font-semibold rounded hover:bg-gray-200">View Now</button>
-            </div> 
-            <div class="mt-4 md:mt-0 order-1 md:order-2">
-                <img src="assets/images/alice-removebg-preview 1.png" alt="Featured Book" class="rounded max-h-72" /> 
-            </div>
-        </section>
-
-        <section>
-            <h2 class="text-2xl font-semibold mb-4">Latest</h2>
-            <div class="flex overflow-x-scroll scroll-hide-native pb-2 space-x-4">
-                
-                <?php
-                // Query para selecionar os últimos livros adicionados (ordenados por ID descendente)
-                $sql_latest = "SELECT id, titulo, capa_url FROM livros ORDER BY id DESC LIMIT 7";
-                $result_latest = $conn->query($sql_latest);
-
-                if ($result_latest && $result_latest->num_rows > 0) {
-                    while($row = $result_latest->fetch_assoc()) {
-                         $detail_url = "book-details.php?id=" . $row['id'];
-                ?>
-                        <a href="<?php echo $detail_url; ?>" class="text-center flex-shrink-0 w-32 hover:opacity-80 transition">
+            if (isset($result) && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $detail_url = "book-details.php?id=" . $row['id'];
+            ?>
+                    <a href="<?php echo $detail_url; ?>" class="group block bg-sidebar-bg/50 p-3 rounded-xl border border-gray-800 hover:border-custom-green hover:bg-sidebar-bg transition-all duration-300">
+                        <div class="relative overflow-hidden rounded-lg mb-3 aspect-[2/3] bg-gray-800 shadow-lg">
                             <img 
-                                src="<?php echo $row['capa_url']; ?>" 
-                                alt="<?php echo htmlspecialchars($row['titulo']); ?>" 
-                                class="w-full h-48 object-cover rounded mb-2" 
+                                src="<?php echo htmlspecialchars($row['cover_url']); ?>" 
+                                alt="<?php echo htmlspecialchars($row['title']); ?>" 
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
-                            <p class="text-base"><?php echo htmlspecialchars($row['titulo']); ?></p>
-                        </a>
-                        <?php
-                    } // Fim do loop
-                    $result_latest->free();
-                } else {
-                    echo "<p class='text-gray-400'>Não foram encontrados registos de últimos livros.</p>";
+                        </div>
+                        <h3 class="text-sm font-bold truncate group-hover:text-custom-green transition-colors">
+                            <?php echo htmlspecialchars($row['title']); ?>
+                        </h3>
+                        <p class="text-[11px] text-gray-500 mt-1 truncate italic">
+                            <?php echo htmlspecialchars($row['author']); ?>
+                        </p>
+                    </a>
+            <?php
                 }
-                
-                // FECHAR A CONEXÃO COM O BANCO DE DADOS (BOA PRÁTICA)
-                $conn->close();
-                ?>
-                
-            </div>
-        </section>
-        
+            } else {
+                echo '<div class="col-span-full py-20 text-center border-2 border-dashed border-gray-800 rounded-3xl text-gray-500 italic">No books found in this genre.</div>';
+            }
+
+            if (isset($stmt)) $stmt->close();
+            $conn->close();
+            ?>
+        </div>
     </main>
-    <?php 
-// Inclui o JavaScript e o fecho das tags HTML
-include 'footer.php'; 
-?>
+</div>
+
+<?php include 'footer.php'; ?>
